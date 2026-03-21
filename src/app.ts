@@ -15,8 +15,6 @@ interface StrokeOptions {
 type ToolType = "brush" | "eraser" | "fill" | "eyedropper" | "line" | "rect";
 
 // ── CLASS: Brush ─────────────────────────────────────────────────
-// Requirement: Classes
-
 class Brush {
   color: string;
   size: number;
@@ -31,7 +29,7 @@ class Brush {
     this.tool = "brush";
   }
 
-  // Requirement: Throwing exceptions
+  //  Throwing exceptions
   private validate(color: string, size: number, opacity: number): void {
     if (!/^#[0-9a-fA-F]{6}$/.test(color) && !color.startsWith("rgb")) {
       throw new Error(`Invalid color: "${color}". Expected hex (#rrggbb) or rgb().`);
@@ -68,10 +66,8 @@ class Brush {
 }
 
 // ── CLASS: HistoryManager ─────────────────────────────────────────
-// Requirement: Classes + Lists
-
 class HistoryManager {
-  private stack: ImageData[] = [];   // Requirement: Lists
+  private stack: ImageData[] = [];   
   private redoStack: ImageData[] = [];
   private maxSteps: number;
 
@@ -108,7 +104,6 @@ class HistoryManager {
 }
 
 // ── CLASS: DrawingApp ─────────────────────────────────────────────
-// Requirement: Classes
 
 class DrawingApp {
   private canvas: HTMLCanvasElement;
@@ -121,7 +116,6 @@ class DrawingApp {
   private previewCanvas: HTMLCanvasElement;
   private previewCtx: CanvasRenderingContext2D;
 
-  // Requirement: Lists — colour palette
   private palette: string[] = [
     "#ffffff", "#f8f0e3", "#ff6b6b", "#ff9f43",
     "#ffd93d", "#6bcb77", "#4d96ff", "#c77dff",
@@ -196,7 +190,6 @@ class DrawingApp {
     if (!container) return;
     container.innerHTML = "";
 
-    // Requirement: Lists — iterate over palette array
     this.palette.forEach((color) => {
       const swatch = document.createElement("button");
       swatch.className = "swatch";
@@ -243,7 +236,7 @@ class DrawingApp {
         this.brush.setSize(parseInt(sizeSlider.value));
         if (sizeLabel) sizeLabel.textContent = sizeSlider.value + "px";
       } catch (err) {
-        // Requirement: Handling exceptions
+        //  Handling exceptions
         this.updateStatus(`⚠️ ${(err as Error).message}`);
       }
     });
@@ -289,7 +282,7 @@ class DrawingApp {
     this.canvas.addEventListener("mousemove", (e) => {
       const p = this.getPos(e);
       const coordEl = document.getElementById("coords");
-      // Requirement: Display output to the browser
+      //Display output to the browser
       if (coordEl) coordEl.textContent = `${Math.round(p.x)}, ${Math.round(p.y)}`;
     });
   }
@@ -413,8 +406,6 @@ class DrawingApp {
   }
 
   // ── RECURSION: Flood Fill ─────────────────────────────────────
-  // Requirement: Recursion
-
   private floodFill(x: number, y: number, fillColor: string): void {
     const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
     const data = imageData.data;
@@ -450,7 +441,7 @@ class DrawingApp {
     };
 
     // Iterative scanline fill (avoids call-stack overflow on large fills)
-    // Requirement: Recursion — recursive helper to expand scanlines
+    //Recursion — recursive helper to expand scanlines
     const visited = new Uint8Array(w * h);
 
     const fillScanline = (startX: number, y: number): void => {
@@ -471,7 +462,7 @@ class DrawingApp {
         visited[y * w + px] = 1;
       }
 
-      // Recurse up and down — Requirement: Recursion
+      // Recurse up and down —  Recursion
       for (let px = left; px <= right; px++) {
         fillScanline(px, y - 1);  // recursive call upward
         fillScanline(px, y + 1);  // recursive call downward
@@ -525,7 +516,7 @@ class DrawingApp {
   }
 
   // ── ASYNC FUNCTIONS ───────────────────────────────────────────
-  // Requirement: Asynchronous functions
+  //  Asynchronous functions
 
   async saveCanvas(): Promise<void> {
     try {
@@ -546,7 +537,7 @@ class DrawingApp {
       URL.revokeObjectURL(url);
       this.updateStatus("✅ Drawing saved as PNG!");
     } catch (err) {
-      // Requirement: Handling exceptions
+      //  Handling exceptions
       if (err instanceof Error) {
         this.updateStatus(`❌ Save failed: ${err.message}`);
       }
@@ -579,7 +570,7 @@ class DrawingApp {
       this.saveSnapshot();
       this.updateStatus(`✅ Loaded "${file.name}"`);
     } catch (err) {
-      // Requirement: Handling exceptions
+      //  Handling exceptions
       if (err instanceof TypeError) {
         this.updateStatus(`❌ Type Error: ${err.message}`);
       } else if (err instanceof Error) {
@@ -598,7 +589,7 @@ class DrawingApp {
   }
 
   // ── UI HELPERS ────────────────────────────────────────────────
-  // Requirement: Display output to the browser
+  //  Display output to the browser
 
   private updateStatus(msg: string): void {
     const el = document.getElementById("status");
@@ -679,7 +670,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
   } catch (err) {
-    // Requirement: Handling exceptions — top-level bootstrap error
+    //  Handling exceptions — top-level bootstrap error
     const msg = err instanceof Error ? err.message : "Unknown startup error";
     document.body.innerHTML = `<div style="color:#ff6b6b;padding:2rem;font-family:monospace">
       ❌ Failed to start Drawing App: ${msg}</div>`;
