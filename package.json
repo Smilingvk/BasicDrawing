@@ -1,0 +1,13 @@
+{
+  "name": "typescript-drawing-app",
+  "version": "1.0.0",
+  "description": "A browser drawing app built with TypeScript and HTML5 Canvas",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "tsc && open index.html"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
