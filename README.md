@@ -2,8 +2,6 @@
 
 A browser-based drawing application built with **TypeScript** and **HTML5 Canvas**. Features a full set of drawing tools, a color palette, undo/redo history, and the ability to save your drawing as a PNG.
 
-[Software Demo Video](https://youtu.be/xaHaoar6QCE)
-
 ---
 
 ## Features
